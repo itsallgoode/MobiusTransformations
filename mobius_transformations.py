@@ -80,11 +80,23 @@ class MobiusTransform:
         return a, b, c, d
         
     def mobius_transformation(self, x, y):
+        test = False
 
-        a, b, c, d = self.getabcd(1, 1)
-        z = x + 1j * y
-        w = (a * z + b) / (c * z + d)
+        while not test:
+            a, b, c, d = self.getabcd(1, 1)
+            z = x + 1j * y
+            w = (a * z + b) / (c * z + d)
+
+            test = self.check_minmax(real(w), imag(w))
+
         return real(w), imag(w)
+
+    def check_minmax(self, x, y):
+        print('out of range, trying again')
+        if max(x) > 1 or min(x) < 0 or max(y) > 1 or min(y) < 0: # check if any values are not in the range (0, 1)
+            return False
+        else:
+            return True
 
     def transform(self):
         columns = self.df.columns.tolist() # copy column names
